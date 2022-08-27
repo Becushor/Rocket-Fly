@@ -8,13 +8,11 @@ public class Movement : MonoBehaviour
     [SerializeField] int flyForce = 50;
     [SerializeField] int rotationForce = 100;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         Accelerate();
