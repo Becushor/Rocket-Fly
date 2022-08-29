@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] int flyForce = 100;
+    
     Rigidbody rb;
-    [SerializeField] int flyForce = 50;
-    [SerializeField] int rotationForce = 100;
+    AudioSource audioSource;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         Accelerate();
-        Rotate();
     }
 
     void Accelerate()
@@ -25,26 +26,14 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             rb.AddRelativeForce(Vector3.up * flyForce * Time.deltaTime);
-        }     
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+            audioSource.Stop();
     }
 
-    void Rotate()
-    {
-        
-        if (Input.GetKey(KeyCode.RightArrow)) //Rotate right
-        {
-            ApplyRotation(-rotationForce);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow)) //Rotate Left
-        {
-            ApplyRotation(rotationForce);
-        }
-    }
-
-    private void ApplyRotation(int rotationThisFrame)
-    {
-        rb.freezeRotation = true;
-        transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
-        rb.freezeRotation = false;
-    }
 }
