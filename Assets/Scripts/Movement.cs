@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] int flyForce = 100;
+    [SerializeField] AudioClip mainEngine;
     
     Rigidbody rb;
     AudioSource audioSource;
@@ -29,7 +30,7 @@ public class Movement : MonoBehaviour
 
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else

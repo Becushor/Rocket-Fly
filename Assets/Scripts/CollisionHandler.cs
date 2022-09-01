@@ -4,13 +4,24 @@ using UnityEngine;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] float levelLoadDelay = 1f;
+    [SerializeField] AudioClip succes;
+    [SerializeField] AudioClip crash;
+
+    AudioSource audioSource;
+
+    bool isTransitioning;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();    
+    }
 
     void OnCollisionEnter(Collision other)
     {
         switch (other.gameObject.tag)
         {
             case "Friendly":
-                Debug.Log("Landing Pad");
+                Debug.Log("Friendly thing!");
                 break;
             case "Finish":
                 StartSuccesSequence();
@@ -23,12 +34,14 @@ public class CollisionHandler : MonoBehaviour
 
     void StartCrashSequence()
     {
+        audioSource.PlayOneShot(crash);
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", levelLoadDelay);
     }
     
     void StartSuccesSequence()
     {
+        audioSource.PlayOneShot(succes);
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", levelLoadDelay);
     }
