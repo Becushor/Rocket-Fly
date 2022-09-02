@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] int flyForce = 100;
     [SerializeField] AudioClip mainEngine;
+    [SerializeField] ParticleSystem mainEngineParticles;
     
     Rigidbody rb;
     AudioSource audioSource;
@@ -21,20 +22,37 @@ public class Movement : MonoBehaviour
         Accelerate();
     }
 
+    // Accelerate UP method
     void Accelerate()
     {
-        //Accelerate up
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            rb.AddRelativeForce(Vector3.up * flyForce * Time.deltaTime);
-
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(mainEngine);
-            }
+            StartBoosting();
         }
         else
-            audioSource.Stop();
+        {
+            StopBoosting();
+        }
     }
 
+    void StartBoosting()
+    {
+        rb.AddRelativeForce(Vector3.up * flyForce * Time.deltaTime);
+
+        if (!mainEngineParticles.isPlaying)
+        {
+            mainEngineParticles.Play();
+        }
+
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+    }
+
+    private void StopBoosting()
+    {
+        mainEngineParticles.Stop();
+        audioSource.Stop();
+    }
 }
